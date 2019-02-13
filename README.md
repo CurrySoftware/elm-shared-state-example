@@ -2,10 +2,10 @@
 
 ## Introduction
 
-In Elm, nested or seperate pages may want to share information among each other.
+In Elm, nested or separate pages may want to share information among each other.
 Realizing this comes with several challenges related to consistency and redundancy.
 Every submodule could hold relevant information, -> prone to errors.
-Common information can be organized across multiple sub-/ modules using a state which is heald by the model of a higher level module, for example the `Main.elm`.
+Common information can be organized across multiple sub-/ modules using a state which is held by the model of a higher level module, for example the `Main.elm`.
 
 This example shows how a state of either a single page application or components in a more complex module may be shared among each other.
 Individual components can access information stored in the state and mutate the state in a defined way.
@@ -38,6 +38,12 @@ The list of issues are stored in the shared `State`.
 
 ```elm
 type alias State = { list : List String }
+```
+
+The set of possible changes to the `State` are defined as messages and only modifiable with the `update` function which is defined as follows:
+
+```elm
+update : Msg -> State -> State
 ```
 
 ### Modules
@@ -81,8 +87,13 @@ update key msg model =
             ( model, Cmd.none, Just stateMsg )
 ```
 
+Note that the current state is not passed to the `update` function.
+This is not needed since the `StateMsg` is self contained.
+
+The `StateMsg` is only returned.
 
 ---
 - Maybe StateMsg
-- No state passed in update
 - Introduce StateMsg in each subModule -> smaller update functions
+
+## Try it yourself
