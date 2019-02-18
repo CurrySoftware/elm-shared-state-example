@@ -104,3 +104,11 @@ git clone https://github.com/CurrySoftware/elm-shared-state-example
 cd elm-shared-state-example
 elm reactor
 ```
+
+## Conclusion
+
+A shared state may be used to improve consistency and remove redundancy when a module is comprised of several submodules or multiple separate modules need to share information among each other.
+We showed the workings of a shared state using an example.
+It uses a common set of update messages which are propagated to the `State` module when an update of the shared state is needed.
+
+Different types of `update` messages may be defined to further improve granularity and separation of concerns.
