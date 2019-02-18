@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Navigation
-import Element exposing (column, layout, padding, spacing, text)
+import Element exposing (centerX, column, layout)
 import Errored exposing (PageLoadError)
 import Html exposing (Html)
 import Page.Edit
@@ -128,7 +128,7 @@ view model =
                 Errored e ->
                     Errored.view e
     in
-    Browser.Document "Titel" [ layout [] (column [] [ header, page ]) ]
+    Browser.Document "Titel" [ layout [] (column [ centerX ] [ header, page ]) ]
 
 
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
