@@ -106,6 +106,32 @@ This is not needed since the `StateMsg` is self contained.
 The message type `StateMsg State.Msg` is introduced in every submodule which needs to update the state.
 This makes the update functions both smaller and more easily extensible.
 
+## Discussion
+
+<!--Overview-->
+A shared state can be used to improve consistency and avoid redundancy when information needs to be shared among multiple modules.
+
+<!--Advantages-->
+The state module has a defined API which means that its model can only be mutated using the existing messages.
+The implementation is therefore hidden from the user.
+This is crucial to the design since it ensures data consistency and makes it easy to manage the set of possible state mutations.
+In addition, the API can be tested more easily.
+
+<!--Alternatives-->
+Alternatively, submodules could each hold a respective subset of the higher level model.
+This makes the implementation of submodules straightforward, but also prone to errors.
+Since parts of the state are held in multiple models, the **single source of truth** principle is violated and redundancy is introduced.
+
+Also, it could be an option to model the application in a single module.
+Technically speaking, this would not harm data consistency or modelling capability.
+However, breaking up the code in submodules is often times sensible because it improves the separation of concerns and makes the tasks of each module more apparent.
+
+<!--Problems-->
+Submodules which are only allowed to mutate a subset of the state still have access to any of the defined messages.
+Different types of `update` messages may be defined in the shared state mitigate this issue.
+<!--TODO Example for this-->
+
+
 ## Try it yourself
 
 You can try this example application by cloning this repository and building the elm app.
@@ -118,10 +144,4 @@ cd elm-shared-state-example
 elm reactor
 ```
 
-## Conclusion
-
-A shared state may be used to improve consistency and remove redundancy when a module is comprised of several submodules or multiple separate modules need to share information among each other.
-We showed the workings of a shared state using an example.
-It uses a common set of update messages which are propagated to the `State` module when an update of the shared state is needed.
-
-Different types of `update` messages may be defined to further improve granularity and separation of concerns.
+Feel free to submit issues with the approach or request clarification.
