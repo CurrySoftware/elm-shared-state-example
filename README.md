@@ -19,7 +19,7 @@ Since a model can only be used and stored in **one** other model and often, info
 With the help of this example application, we propose how a state of either a single page application or components in a more complex module may be shared among each other.
 The shared model is stored in a higher level module, in this case the `Main.elm`, and its information can be accessed and mutated by individual components using the predefined minimalistic API.
 
-## Previous Solutions
+## Related Work
 
 [Hanhinen](https://github.com/ohanhi) proposed a concept of a shared state which can be found at
 [elm-shared-state](https://github.com/ohanhi/elm-shared-state).
