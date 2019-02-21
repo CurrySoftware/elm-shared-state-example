@@ -4,11 +4,20 @@
 
 In Elm, nested or separate pages may want to share information among each other.
 However, realizing this comes with several challenges related to consistency and redundancy.
-Every submodule could hold relevant information, which renders a significant overhead and is also prone to errors, since the information needs to be consistent across the modules used.
-Instead, common information can be organized across multiple sub-/ modules using a state which is held by the model of a higher level module, for example the `Main.elm`.
+Because of the added complexity of additional modules, it is often discouraged to split up functionality into multiple modules if information parts of the model need to be shared.
 
-In this example application, we will show how a state of either a single page application or components in a more complex module may be shared among each other.
-Individual components can access information stored in the state and mutate the state in a predefined way.
+Instead, files may be larger in size and consist of one rather complex module.
+In [The life of a file](https://www.youtube.com/watch?v=XpDsk374LDE), [Czaplicki](https://github.com/evancz) talks about this refactoring task and possible solutions.
+He emphasizes that large files can still be controlled and are not more error prone because of cheap refactoring and the absence of 'sneaky mutations'.
+
+If **independent** pieces of code exist which in addition may be reusable, he recommends to extract this functionality into a separate module.
+The architecture then uses the API of this module which is reduced to the minimum and hides its implementation details.
+Thus, it is **reusable** and **consistent**, in essence, mutations to the model are only possible in a predefined way.
+
+Since a model can only be used and stored in **one** other model and often, information needs to be shared among multiple modules, a different solution is needed.
+
+With the help of this example application, we propose how a state of either a single page application or components in a more complex module may be shared among each other.
+The shared model is stored in a higher level module, in this case the `Main.elm`, and its information can be accessed and mutated by individual components using the predefined minimalistic API.
 
 ## Previous Solutions
 
