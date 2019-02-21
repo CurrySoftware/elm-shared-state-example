@@ -23,7 +23,7 @@ The shared model is stored in a higher level module, in this case the `Main.elm`
 
 [Hanhinen](https://github.com/ohanhi) proposed a concept of a shared state which can be found at
 [elm-shared-state](https://github.com/ohanhi/elm-shared-state).
-In his version, the `SharedState` model holds information which is used by several submodules.
+In their version, the `SharedState` model holds information which is used by several submodules.
 The information is sent to each submodule via the added parameter in the respective functions view and update:
 
 ```elm
@@ -42,7 +42,11 @@ update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
 ## Description of our approach
 
 We extended the approach from [Hanhinen](https://github.com/ohanhi) and use an example single page application to show our findings.
-The example site is a simple issue tracker which keeps track of a list of issues which are stored in the shared `State`.
+The example site is a simple issue tracker:
+
+![List of Issues](resources/ListView.png)
+
+It keeps track of a list of issues which are stored in the shared `State`.
 
 ```elm
 type alias State = { list : List String }
