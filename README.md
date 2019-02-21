@@ -44,7 +44,7 @@ update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
 We extended the approach from [Hanhinen](https://github.com/ohanhi) and use an example single page application to show our findings.
 The example site is a simple issue tracker:
 
-![List of Issues](resources/ListView.png)
+ <img src="resources/ListView.png" alt="List of Issues" width="500"> 
 
 It keeps track of a list of issues which are stored in the shared `State`.
 
