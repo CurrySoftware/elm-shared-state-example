@@ -48,7 +48,12 @@ init _ url key =
         { page = List
         , currentRoute = Nothing
         , key = key
-        , state = State.init [ "Issue #1", "Issue #2", "Issue #5" ]
+        , state =
+            State.init
+                [ "Issue #1"
+                , "Issue #2"
+                , "Issue #3"
+                ]
         }
 
 
