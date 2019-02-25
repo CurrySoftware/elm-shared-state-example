@@ -6,7 +6,7 @@ import Element exposing (centerX, column, layout)
 import Errored exposing (PageLoadError)
 import Html exposing (Html)
 import Page.Edit
-import Page.Header
+import Page.Header as Header
 import Page.Item
 import Page.List
 import Route exposing (Route)
@@ -19,6 +19,15 @@ type alias Model =
     , currentRoute : Maybe Route
     , key : Navigation.Key
     , state : State
+    , subscription : Subscription
+    , header : Header.Model
+    }
+
+
+type alias Subscription =
+    { subscribedMsg : State.Msg
+    , updateMsg : String -> Header.Msg
+    , update : Header.Msg -> Header.Model -> Header.Model
     }
 
 
@@ -33,7 +42,6 @@ type Msg
     = ChangedUrl Url
     | ClickedLink Browser.UrlRequest
     | SubPage PageMsg
-    | StateMsg State.Msg
 
 
 type PageMsg
@@ -49,6 +57,8 @@ init _ url key =
         , currentRoute = Nothing
         , key = key
         , state = State.init [ "Issue #1", "Issue #2", "Issue #5" ]
+        , subscription = { subscribedMsg = State.AddIssue, updateMsg = Header.UpdateText, update = Header.update }
+        , header = Header.init
         }
 
 
@@ -77,10 +87,14 @@ updatePage key msg model =
             let
                 ( newModel, newCmd, stateMsg ) =
                     subUpdate key subMsg subModel
+
+                ( state, effects ) =
+                    executeStateMsg stateMsg
             in
             ( { model
                 | page = toModel newModel
-                , state = executeStateMsg stateMsg
+                , state = state
+                , header = model.subscription.update model.updateMsg.model model.header
               }
             , Cmd.map (SubPage << toMsg) newCmd
             )
@@ -109,7 +123,7 @@ view : Model -> Browser.Document Msg
 view model =
     let
         header =
-            Page.Header.view model.state
+            Header.view model.state
 
         page =
             case model.page of
