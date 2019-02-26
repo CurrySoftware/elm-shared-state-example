@@ -71,7 +71,12 @@ Every submodule needs information held by the `State`, thus it is passed to resp
 
 ### Update
 
-The messages of the `Edit` submodule look like the following:
+The Following figure gives an overview of the update process:
+
+![Update of Edit](resources/Overview.svg)
+
+First, an update in Main is triggered.
+Then, `Edit.update` is called with the present `Edit.Msg` message which looks like the following:
 
 ```elm
 type Msg
@@ -98,13 +103,21 @@ update key msg model =
 ```
 
 The `StateMsg` is wrapped in a `Maybe` monad and only returned when an update of the `State` is needed.
-The `update` function therefore returns `Just (EditIssue selectIdx text)` as the state message.
+The `update` function thus returns `Just (EditIssue selectIdx text)` as the state update message.
 
 Note that the current state is not passed to the `update` function.
 This is not needed since the `StateMsg` is self contained.
 
-The message type `StateMsg State.Msg` is introduced in every submodule which needs to update the state.
+The message type `StateMsg State.Msg` is introduced in every submodule which needs to update the state (`Header` only consists of a view).
 This makes the update functions both smaller and more easily extensible.
+
+`Main` now calls the `update` function of the state with the returned message.
+This only happens if a `StateMsg` is present.
+The new state is returned and saved along side the `Edit.Module`.
+
+### State Subscription
+
+The update process in the previous section may be extended...
 
 ## Discussion
 
@@ -123,7 +136,7 @@ This makes the implementation of submodules straightforward, but also prone to e
 Since parts of the state are held in multiple models, the **single source of truth** principle is violated and redundancy is introduced.
 
 Also, it could be an option to model the application in a single module.
-Technically speaking, this would not harm data consistency or modelling capability.
+Technically speaking, this would not harm data consistency or modeling capability.
 However, breaking up the code in submodules is often times sensible because it improves the separation of concerns and makes the tasks of each module more apparent.
 
 <!--Problems-->
