@@ -2,17 +2,19 @@
 
 ## Introduction
 
-In Elm, nested or separate pages may want to share information among each other.
-However, realizing this comes with several challenges related to consistency and redundancy.
+In Elm, splitting up a module into multiple smaller modules may be cumbersome and result in issues relating to the single source of truth principle.
+That's why, in real world Elm applications, it is not seldom to encounter very large modules.
+This article will introduce an architectural concept to deal with this issue by allowing splitting up modules into logical, consistent and reusable submodules.
+
 Because of the added complexity of additional modules, it is often discouraged to split up functionality into multiple modules if information parts of the model need to be shared.
 
-Instead, files may be larger in size and consist of one rather complex module.
+Instead, files may be larger in size and consist of one rather complex module.<!--von der anderen seite rangehen-->
 In [The life of a file](https://www.youtube.com/watch?v=XpDsk374LDE), [Czaplicki](https://github.com/evancz) talks about this refactoring task and possible solutions.
 He emphasizes that large files can still be controlled and are not more error prone because of cheap refactoring and the absence of 'sneaky mutations'.
 
 If **independent** pieces of code exist which in addition may be reusable, he recommends to extract this functionality into a separate module.
 The architecture then uses the API of this module which is reduced to the minimum and hides its implementation details.
-Thus, it is **reusable** and **consistent**, in essence, mutations to the model are only possible in a predefined way.
+Thus, it is **reusable** and **consistent**, in essence, mutations to the model are only possible in a predefined way. <!--unklar-->
 
 Since a model can only be used and stored in **one** other model and often, information needs to be shared among multiple modules, a different solution is needed.
 
@@ -121,38 +123,36 @@ The modules display the respective view using both the shared state and their mo
 
 ## Discussion
 
-<!--Overview-->
 A shared state can be used to improve consistency and avoid redundancy when information needs to be shared among multiple modules.
 
-<!--Advantages-->
+### Advantages
 The state module has a defined API which means that its model can only be mutated using the existing messages.
 The implementation is therefore hidden from the user.
 This is crucial to the design since it ensures data consistency and makes it easy to manage the set of possible state mutations.
 In addition, the API can be tested more easily.
 
-<!--Alternatives-->
+### Alternatives
 Alternatively, submodules could each hold a respective subset of the higher level model.
 This makes the implementation of submodules straightforward, but also prone to errors.
 Since parts of the state are held in multiple models, the **single source of truth** principle is violated and redundancy is introduced.
 
 Also, it could be an option to model the application in a single module.
 Technically speaking, this would not harm data consistency or modeling capability.
-However, breaking up the code in submodules is often times sensible because it improves the separation of concerns and makes the tasks of each module more apparent.
+However, breaking up the code in submodules is often times sensible because it improves the granularity and makes the tasks of each module more apparent.
 
-<!--Problems-->
-Improvements can also be made with respect to security.
+### Drawbacks
+
+Improvements can still be made with respect to abstraction and separation of concerns.
 Submodules, which are only allowed to mutate a subset of the state, still have access to any of the defined messages.
 Different types of `update` messages may be defined in the shared state mitigate this issue.
 
-
-<!--State Subscription-->
 With the presented architecture, it is not intended for submodules to propagate updates to models of other submodules.
 In essence, it is not possible for A to trigger an event that changes the model of B without the shared state holding the respective information.
 However, this type of update is useful and as of now renders a drawback to the shared state approach.
 For example, it would be beneficial if a change in a selection that is a state change would display a modal in a different module.
 
-The proposed update process may therefore be extended by a subscription system.
-In this architecture, submodules would subscribe to state messages and receive updates when respective messages are processed by the shared state.
+Perhaps, an extension in the form of a subscription system, may address this issue.
+Submodules might subscribe to state messages and receive updates when respective messages are processed by the shared state.
 
 ## Try it yourself
 
