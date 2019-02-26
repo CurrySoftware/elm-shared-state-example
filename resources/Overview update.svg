@@ -227,9 +227,9 @@
       </g>
       <g class="com.sun.star.drawing.CustomShape">
        <g id="id7">
-        <rect class="BoundingBox" stroke="none" fill="none" x="6322" y="-18" width="5118" height="2578"/>
-        <path fill="none" stroke="rgb(52,101,164)" stroke-width="35" stroke-linejoin="round" d="M 6669,0 C 6504,0 6340,164 6340,329 L 6340,2211 C 6340,2376 6504,2541 6669,2541 L 11091,2541 C 11256,2541 11421,2376 11421,2211 L 11421,329 C 11421,164 11256,0 11091,0 L 6669,0 Z"/>
-        <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="8139" y="1491"><tspan fill="rgb(0,0,0)" stroke="none">State</tspan></tspan></tspan></text>
+        <rect class="BoundingBox" stroke="none" fill="none" x="6322" y="6" width="5118" height="2527"/>
+        <path fill="none" stroke="rgb(52,101,164)" stroke-width="35" stroke-linejoin="round" d="M 6662,24 C 6501,24 6340,185 6340,346 L 6340,2191 C 6340,2352 6501,2514 6662,2514 L 11098,2514 C 11259,2514 11421,2352 11421,2191 L 11421,346 C 11421,185 11259,24 11098,24 L 6662,24 Z"/>
+        <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="635px" font-weight="400"><tspan class="TextPosition" x="8139" y="1489"><tspan fill="rgb(0,0,0)" stroke="none">State</tspan></tspan></tspan></text>
        </g>
       </g>
       <g class="com.sun.star.drawing.CustomShape">
