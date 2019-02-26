@@ -44,7 +44,7 @@ update : SharedState -> Msg -> Model -> ( Model, Cmd Msg, SharedStateUpdate )
 We extended the approach from [Hanhinen](https://github.com/ohanhi) and use an example single page application to show our findings.
 The example site is a simple issue tracker:
 
- <img src="resources/ListView.png" alt="List of Issues" width="500"> 
+ <img src="resources/ListView.png" alt="List of Issues" width="700"> 
 
 It keeps track of a list of issues which are stored in the shared `State`.
 
@@ -67,13 +67,20 @@ The application is comprised of the following four modules:
 - Issues can be read on the `Item` page.
 - Additionally, a `Header` shows the current number of issues.
 
-Every submodule needs information held by the `State`, thus it is passed to respective `view` functions.
+### View
+
+The following figure gives an overview of the `view` functionality:
+
+![Overview View](resources/OverviewView.svg)
+
+Most submodules need information held by the `State`, thus it is passed to respective `view` function.
+The modules display the respective view using both the shared state and their module.
 
 ### Update
 
-The Following figure gives an overview of the update process:
+The following figure gives an overview of the `update` functionality:
 
-![Update of Edit](resources/Overview.svg)
+![Update Update](resources/OverviewUpdate.svg)
 
 First, an update in Main is triggered.
 Then, `Edit.update` is called with the present `Edit.Msg` message which looks like the following:
@@ -105,19 +112,12 @@ update key msg model =
 The `StateMsg` is wrapped in a `Maybe` monad and only returned when an update of the `State` is needed.
 The `update` function thus returns `Just (EditIssue selectIdx text)` as the state update message.
 
-Note that the current state is not passed to the `update` function.
-This is not needed since the `StateMsg` is self contained.
-
 The message type `StateMsg State.Msg` is introduced in every submodule which needs to update the state (`Header` only consists of a view).
 This makes the update functions both smaller and more easily extensible.
 
 `Main` now calls the `update` function of the state with the returned message.
-This only happens if a `StateMsg` is present.
+This only happens if a `StateMsg` is present, so steps four and five are optional.
 The new state is returned and saved along side the `Edit.Module`.
-
-### State Subscription
-
-The update process in the previous section may be extended...
 
 ## Discussion
 
@@ -140,10 +140,19 @@ Technically speaking, this would not harm data consistency or modeling capabilit
 However, breaking up the code in submodules is often times sensible because it improves the separation of concerns and makes the tasks of each module more apparent.
 
 <!--Problems-->
-Submodules which are only allowed to mutate a subset of the state still have access to any of the defined messages.
+Improvements can also be made with respect to security.
+Submodules, which are only allowed to mutate a subset of the state, still have access to any of the defined messages.
 Different types of `update` messages may be defined in the shared state mitigate this issue.
-<!--TODO Example for this-->
 
+
+<!--State Subscription-->
+With the presented architecture, it is not intended for submodules to propagate updates to models of other submodules.
+In essence, it is not possible for A to trigger an event that changes the model of B without the shared state holding the respective information.
+However, this type of update is useful and as of now renders a drawback to the shared state approach.
+For example, it would be beneficial if a change in a selection that is a state change would display a modal in a different module.
+
+The proposed update process may therefore be extended by a subscription system.
+In this architecture, submodules would subscribe to state messages and receive updates when respective messages are processed by the shared state.
 
 ## Try it yourself
 
