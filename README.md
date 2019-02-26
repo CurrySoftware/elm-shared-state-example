@@ -67,15 +67,6 @@ The application is comprised of the following four modules:
 - Issues can be read on the `Item` page.
 - Additionally, a `Header` shows the current number of issues.
 
-### View
-
-The following figure gives an overview of the `view` functionality:
-
-![Overview View](resources/OverviewView.svg)
-
-Most submodules need information held by the `State`, thus it is passed to respective `view` function.
-The modules display the respective view using both the shared state and their module.
-
 ### Update
 
 The following figure gives an overview of the `update` functionality:
@@ -118,6 +109,15 @@ This makes the update functions both smaller and more easily extensible.
 `Main` now calls the `update` function of the state with the returned message.
 This only happens if a `StateMsg` is present, so steps four and five are optional.
 The new state is returned and saved along side the `Edit.Module`.
+
+### View
+
+The following figure gives an overview of the `view` functionality:
+
+![Overview View](resources/OverviewView.svg)
+
+Most submodules need information held by the `State`, thus it is passed to the `view` functions.
+The modules display the respective view using both the shared state and their module.
 
 ## Discussion
 
