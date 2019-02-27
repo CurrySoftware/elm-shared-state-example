@@ -16,14 +16,14 @@ If **independent** pieces of code exist which in addition may be reusable, he re
 We extend this refactoring concept by introducing a **shared state** that can be utilized when several parts of the code are **not independent**.
 
 With the help of this example application, we propose how a state of either a single page application or components in a more complex module may be shared among each other.
-The shared model is stored in a higher level module, in this case the `Main.elm` and its information can be accessed and mutated by individual components using the predefined API.
+In this case, the shared model `State` is stored in the higher level module `Main` and its information can be accessed and mutated by individual components using the predefined API using messages.
 
 ## Related Work
 
 [Hanhinen](https://github.com/ohanhi) proposed a concept of a shared state which can be found at
 [elm-shared-state](https://github.com/ohanhi/elm-shared-state).
 In their version, the `SharedState` model holds information which is used by several submodules.
-The information is sent to each submodule via the added parameter in the respective functions view and update:
+The information is sent to each submodule via the added parameter in the view and update functions:
 
 ```elm
 view : SharedState -> Model -> Html Msg
@@ -59,16 +59,16 @@ update : Msg -> State -> State
 
 ### Modules
 
-The application is comprised of the following four modules:
+In addition to the `State` module, the application has the following four view modules:
 
 - The `List` module presents an overview of the issues. From here, issues may be created, viewed, updated or deleted.
-- An issue can be edited on the `Edit` page.
-- Issues can be read on the `Item` page.
+- Issues can be viewed on the `Item` page.
+- An issue can be updated on the `Edit` page.
 - Additionally, a `Header` shows the current number of issues.
 
 ### Update
 
-The following figure gives an overview of the `update` functionality:
+The following figure gives an overview of the `update` functionality using `Edit` as an example:
 
 ![Update Update](resources/OverviewUpdate.svg)
 
@@ -106,7 +106,7 @@ The message type `StateMsg State.Msg` is introduced in every submodule which nee
 This makes the update functions both smaller and more easily extensible.
 
 `Main` now calls the `update` function of the state with the returned message.
-This only happens if a `StateMsg` is present, so steps four and five are optional.
+This only happens if a `StateMsg` is present, so steps four and five in the overview are optional.
 The new state is returned and saved along side the `Edit.Module`.
 
 ### View
@@ -115,8 +115,8 @@ The following figure gives an overview of the `view` functionality:
 
 ![Overview View](resources/OverviewView.svg)
 
-Most submodules need information held by the `State`, thus it is passed to the `view` functions.
-The modules display the respective view using both the shared state and their module.
+Since most submodules need information held by the `State`, it is passed to the `view` functions.
+The modules display the respective view using both the shared state and their own module.
 
 ## Discussion
 
@@ -130,18 +130,18 @@ In addition, the API can be tested more easily.
 
 ### Alternatives
 Alternatively, submodules could each hold a respective subset of the higher level model.
-This makes the implementation of submodules straightforward, but also prone to errors.
+This makes the implementation of submodules straightforward, but also error prone.
 Since parts of the state are held in multiple models, the **single source of truth** principle is violated and redundancy is introduced.
 
 Also, it could be an option to model the application in a single module.
 Technically speaking, this would not harm data consistency or modeling capability.
-However, breaking up the code in submodules is often times sensible because it improves the granularity and makes the tasks of each module more apparent.
+However, breaking up the code in submodules is often times sensible because it improves the separation of concerns and makes the tasks of each module more apparent.
 
 ### Drawbacks
 
 Improvements can still be made with respect to abstraction and separation of concerns.
 Submodules, which are only allowed to mutate a subset of the state, still have access to any of the defined messages.
-Different types of `update` messages may be defined in the shared state mitigate this issue.
+Different types of `update` messages may be defined in the shared state to mitigate this issue.
 
 With the presented architecture, it is not intended for submodules to propagate updates to models of other submodules.
 In essence, it is not possible for A to trigger an event that changes the model of B without the shared state holding the respective information.
