@@ -2,24 +2,21 @@
 
 ## Introduction
 
-In Elm, splitting up a module into multiple smaller modules may be cumbersome and result in issues relating to the single source of truth principle.
+In Elm, splitting up a module into multiple smaller modules may be cumbersome and result in issues relating to the **single source of truth** principle.
 That's why, in real world Elm applications, it is not seldom to encounter very large modules.
-This article will introduce an architectural concept to deal with this issue by allowing splitting up modules into logical, consistent and reusable submodules.
+This article will introduce an architectural concept to deal with this issue by allowing the division of modules into **logical**, **consistent** and **reusable** submodules.
 
-Because of the added complexity of additional modules, it is often discouraged to split up functionality into multiple modules if information parts of the model need to be shared.
+This is often discouraged due to the additional complexity of the information that has to be available in several modules.
+Instead, it is suggested that files are larger and consist of one rather complex module.
 
-Instead, files may be larger in size and consist of one rather complex module.<!--von der anderen seite rangehen-->
-In [The life of a file](https://www.youtube.com/watch?v=XpDsk374LDE), [Czaplicki](https://github.com/evancz) talks about this refactoring task and possible solutions.
+In [The life of a file](https://www.youtube.com/watch?v=XpDsk374LDE), [Czaplicki](https://github.com/evancz) talks about this refactoring task and proposes possible solutions.
 He emphasizes that large files can still be controlled and are not more error prone because of cheap refactoring and the absence of 'sneaky mutations'.
-
 If **independent** pieces of code exist which in addition may be reusable, he recommends to extract this functionality into a separate module.
-The architecture then uses the API of this module which is reduced to the minimum and hides its implementation details.
-Thus, it is **reusable** and **consistent**, in essence, mutations to the model are only possible in a predefined way. <!--unklar-->
 
-Since a model can only be used and stored in **one** other model and often, information needs to be shared among multiple modules, a different solution is needed.
+We extend this refactoring concept by introducing a **shared state** that can be utilized when several parts of the code are **not independent**.
 
 With the help of this example application, we propose how a state of either a single page application or components in a more complex module may be shared among each other.
-The shared model is stored in a higher level module, in this case the `Main.elm`, and its information can be accessed and mutated by individual components using the predefined minimalistic API.
+The shared model is stored in a higher level module, in this case the `Main.elm` and its information can be accessed and mutated by individual components using the predefined API.
 
 ## Related Work
 
