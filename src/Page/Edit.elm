@@ -49,7 +49,7 @@ view model =
             , placeholder = Nothing
             , label = labelAbove [] (text "")
             }
-        , button [] { label = text "edit", onPress = Just (StateMsg (EditIssue model.select model.text)) }
+        , button [] { label = text "save", onPress = Just (StateMsg (EditIssue model.select model.text)) }
         , text " "
         , button [] { label = text "back", onPress = Just GoBack }
         ]
